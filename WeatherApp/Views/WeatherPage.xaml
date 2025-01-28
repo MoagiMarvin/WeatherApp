@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeatherApp.Views.WeatherPage"
+             xmlns:viewmodel="clr-namespace:WeatherApp.ViewModels"
+             x:DataType="viewmodel:WeatherViewModel"
+             Title="Weather">
+
+    <RefreshView Command="{Binding RefreshCommand}"
+                 IsRefreshing="{Binding IsBusy}">
+        <ScrollView>
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                  Padding="20"
+                  RowSpacing="20">
+
+                <!-- City Name -->
+                <Label Grid.Row="0"
+                       Text="{Binding WeatherData.CityName}"
+                       FontSize="32"
+                       HorizontalOptions="Center"/>
+
+                <!-- Temperature and Description -->
+                <VerticalStackLayout Grid.Row="1" 
+                                   Spacing="10"
+                                   HorizontalOptions="Center">
+                    <Label Text="{Binding WeatherData.Temperature, StringFormat='{0:F1}°C'}"
+                           FontSize="48"
+                           HorizontalOptions="Center"/>
+                    <Label Text="{Binding WeatherData.Description}"
+                           FontSize="20"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+                <!-- Weather Details -->
+                <Grid Grid.Row="2" 
+                      ColumnDefinitions="*,*"
+                      RowDefinitions="Auto,Auto"
+                      RowSpacing="20"
+                      ColumnSpacing="20">
+
+                    <!-- Feels Like -->
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                        <Label Text="Feels Like"
+                               HorizontalOptions="Center"/>
+                        <Label Text="{Binding WeatherData.FeelsLike, StringFormat='{0:F1}°C'}"
+                               FontSize="20"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <!-- Humidity -->
+                    <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                        <Label Text="Humidity"
+                               HorizontalOptions="Center"/>
+                        <Label Text="{Binding WeatherData.Humidity, StringFormat='{0}%'}"
+                               FontSize="20"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <!-- Wind Speed -->
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                        <Label Text="Wind Speed"
+                               HorizontalOptions="Center"/>
+                        <Label Text="{Binding WeatherData.WindSpeed, StringFormat='{0:F1} m/s'}"
+                               FontSize="20"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Location -->
+                <VerticalStackLayout Grid.Row="3" 
+                                   Spacing="5"
+                                   HorizontalOptions="Center">
+                    <Label Text="{Binding WeatherData.Latitude, StringFormat='Lat: {0:F4}'}"
+                           FontSize="14"/>
+                    <Label Text="{Binding WeatherData.Longitude, StringFormat='Lon: {0:F4}'}"
+                           FontSize="14"/>
+                </VerticalStackLayout>
+
+            </Grid>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
