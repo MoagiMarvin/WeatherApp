@@ -14,7 +14,45 @@ namespace WeatherApp.Services
         {
             _httpClient = new HttpClient();
         }
+        public async Task<WeatherData> GetWeatherByCity(string city)
+        {
+            try
+            {
+                Debug.WriteLine($"Searching weather for city: {city}");
+                var url = $"{BaseUrl}/weather?q={city}&appid={ApiKey}&units=metric";
 
+                var response = await _httpClient.GetStringAsync(url);
+                Debug.WriteLine($"API Response received: {response}");
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var weatherResponse = JsonSerializer.Deserialize<WeatherResponse>(response, options);
+
+                if (weatherResponse == null)
+                    throw new Exception("Failed to deserialize weather response");
+
+                return new WeatherData
+                {
+                    Temperature = weatherResponse.Main?.Temp ?? 0,
+                    FeelsLike = weatherResponse.Main?.Feels_like ?? 0,
+                    Humidity = weatherResponse.Main?.Humidity ?? 0,
+                    Description = weatherResponse.Weather?.FirstOrDefault()?.Description ?? "No description available",
+                    Icon = weatherResponse.Weather?.FirstOrDefault()?.Icon ?? "",
+                    CityName = weatherResponse.Name ?? "Unknown Location",
+                    WindSpeed = weatherResponse.Wind?.Speed ?? 0,
+                    Latitude = weatherResponse.Coord?.Lat ?? 0,
+                    Longitude = weatherResponse.Coord?.Lon ?? 0
+                };
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in GetWeatherByCity: {ex.Message}");
+                throw;
+            }
+        }
         public async Task<WeatherData> GetWeatherDataAsync()
         {
             try

@@ -21,6 +21,7 @@
         public Main Main { get; set; }
         public Wind Wind { get; set; }
         public string Name { get; set; }
+        public string IconUrl => $"https://openweathermap.org/img/wn/{Weather[0].Icon}@4x.png";
     }
 
     public class Coord
@@ -48,4 +49,5 @@
     {
         public double Speed { get; set; }
     }
+   
 }

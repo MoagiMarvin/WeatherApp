@@ -12,6 +12,7 @@ namespace WeatherApp.ViewModels
         private readonly WeatherService _weatherService;
         private WeatherData _weatherData;
         private bool _isBusy;
+        private string _searchText;
 
         public WeatherData WeatherData
         {
@@ -33,15 +34,52 @@ namespace WeatherApp.ViewModels
             }
         }
 
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand RefreshCommand { get; }
+        public ICommand SearchCommand { get; }
 
         public WeatherViewModel(WeatherService weatherService)
         {
             _weatherService = weatherService;
             RefreshCommand = new Command(async () => await LoadWeatherAsync());
+            SearchCommand = new Command<string>(async (city) => await SearchCity(city));
 
             // Load weather data when ViewModel is created
             MainThread.BeginInvokeOnMainThread(async () => await LoadWeatherAsync());
+        }
+
+        private async Task SearchCity(string city)
+        {
+            if (IsBusy || string.IsNullOrWhiteSpace(city))
+                return;
+
+            try
+            {
+                IsBusy = true;
+                WeatherData = await _weatherService.GetWeatherByCity(city);
+            }
+            catch (HttpRequestException)
+            {
+                await Shell.Current.DisplayAlert("Error", "City not found or network error occurred.", "OK");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Search error: {ex.Message}");
+                await Shell.Current.DisplayAlert("Error", "Unable to get weather data for this city.", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         public async Task LoadWeatherAsync()
@@ -77,6 +115,7 @@ namespace WeatherApp.ViewModels
                 IsBusy = false;
             }
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

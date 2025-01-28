@@ -23,19 +23,43 @@
         <RefreshView Command="{Binding RefreshCommand}"
                      IsRefreshing="{Binding IsBusy}">
             <ScrollView>
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
                       Padding="20"
                       RowSpacing="20">
 
+                    <!-- Search Bar -->
+                    <Frame Grid.Row="0" 
+                           BackgroundColor="#FFFFFF20"
+                           CornerRadius="20"
+                           Padding="10"
+                           BorderColor="Transparent">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Entry Grid.Column="0"
+                                   Text="{Binding SearchText}"
+                                   Placeholder="Enter city name"
+                                   PlaceholderColor="#FFFFFF80"
+                                   TextColor="White"
+                                   ReturnCommand="{Binding SearchCommand}"
+                                   ReturnCommandParameter="{Binding SearchText}"/>
+                            <Button Grid.Column="1"
+                                    Text="🔍"
+                                    Command="{Binding SearchCommand}"
+                                    CommandParameter="{Binding SearchText}"
+                                    BackgroundColor="Transparent"
+                                    TextColor="White"
+                                    FontSize="18"/>
+                        </Grid>
+                    </Frame>
+
                     <!-- City Name -->
-                    <Label Grid.Row="0"
+                    <Label Grid.Row="1"
                            Text="{Binding WeatherData.CityName}"
                            FontSize="32"
                            TextColor="White"
                            HorizontalOptions="Center"/>
 
                     <!-- Temperature and Description -->
-                    <VerticalStackLayout Grid.Row="1" 
+                    <VerticalStackLayout Grid.Row="2" 
                                        Spacing="10"
                                        HorizontalOptions="Center">
                         <Label Text="{Binding WeatherData.Temperature, StringFormat='{0:F1}°C'}"
@@ -49,7 +73,7 @@
                     </VerticalStackLayout>
 
                     <!-- Weather Details -->
-                    <Grid Grid.Row="2" 
+                    <Grid Grid.Row="3" 
                           ColumnDefinitions="*,*"
                           RowDefinitions="Auto,Auto"
                           RowSpacing="20"
@@ -90,7 +114,7 @@
                     </Grid>
 
                     <!-- Location -->
-                    <VerticalStackLayout Grid.Row="3" 
+                    <VerticalStackLayout Grid.Row="4" 
                                        Spacing="5"
                                        HorizontalOptions="Center">
                         <Label Text="{Binding WeatherData.Latitude, StringFormat='Lat: {0:F4}'}"
