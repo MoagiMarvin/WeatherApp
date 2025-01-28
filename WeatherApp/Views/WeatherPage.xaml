@@ -6,77 +6,102 @@
              x:DataType="viewmodel:WeatherViewModel"
              Title="Weather">
 
-    <RefreshView Command="{Binding RefreshCommand}"
-                 IsRefreshing="{Binding IsBusy}">
-        <ScrollView>
-            <Grid RowDefinitions="Auto,Auto,Auto,Auto"
-                  Padding="20"
-                  RowSpacing="20">
+    <ContentPage.Resources>
+        <Style x:Key="WeatherContentStyle" TargetType="Grid">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#87CEEB" Offset="0.0" />
+                        <GradientStop Color="#1E90FF" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
 
-                <!-- City Name -->
-                <Label Grid.Row="0"
-                       Text="{Binding WeatherData.CityName}"
-                       FontSize="32"
-                       HorizontalOptions="Center"/>
+    <Grid x:Name="BackgroundGrid" Style="{StaticResource WeatherContentStyle}">
+        <RefreshView Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding IsBusy}">
+            <ScrollView>
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                      Padding="20"
+                      RowSpacing="20">
 
-                <!-- Temperature and Description -->
-                <VerticalStackLayout Grid.Row="1" 
-                                   Spacing="10"
-                                   HorizontalOptions="Center">
-                    <Label Text="{Binding WeatherData.Temperature, StringFormat='{0:F1}°C'}"
-                           FontSize="48"
+                    <!-- City Name -->
+                    <Label Grid.Row="0"
+                           Text="{Binding WeatherData.CityName}"
+                           FontSize="32"
+                           TextColor="White"
                            HorizontalOptions="Center"/>
-                    <Label Text="{Binding WeatherData.Description}"
-                           FontSize="20"
-                           HorizontalOptions="Center"/>
-                </VerticalStackLayout>
 
-                <!-- Weather Details -->
-                <Grid Grid.Row="2" 
-                      ColumnDefinitions="*,*"
-                      RowDefinitions="Auto,Auto"
-                      RowSpacing="20"
-                      ColumnSpacing="20">
-
-                    <!-- Feels Like -->
-                    <VerticalStackLayout Grid.Row="0" Grid.Column="0">
-                        <Label Text="Feels Like"
+                    <!-- Temperature and Description -->
+                    <VerticalStackLayout Grid.Row="1" 
+                                       Spacing="10"
+                                       HorizontalOptions="Center">
+                        <Label Text="{Binding WeatherData.Temperature, StringFormat='{0:F1}°C'}"
+                               FontSize="48"
+                               TextColor="White"
                                HorizontalOptions="Center"/>
-                        <Label Text="{Binding WeatherData.FeelsLike, StringFormat='{0:F1}°C'}"
+                        <Label Text="{Binding WeatherData.Description}"
                                FontSize="20"
+                               TextColor="White"
                                HorizontalOptions="Center"/>
                     </VerticalStackLayout>
 
-                    <!-- Humidity -->
-                    <VerticalStackLayout Grid.Row="0" Grid.Column="1">
-                        <Label Text="Humidity"
-                               HorizontalOptions="Center"/>
-                        <Label Text="{Binding WeatherData.Humidity, StringFormat='{0}%'}"
-                               FontSize="20"
-                               HorizontalOptions="Center"/>
-                    </VerticalStackLayout>
+                    <!-- Weather Details -->
+                    <Grid Grid.Row="2" 
+                          ColumnDefinitions="*,*"
+                          RowDefinitions="Auto,Auto"
+                          RowSpacing="20"
+                          ColumnSpacing="20">
 
-                    <!-- Wind Speed -->
-                    <VerticalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                        <Label Text="Wind Speed"
-                               HorizontalOptions="Center"/>
-                        <Label Text="{Binding WeatherData.WindSpeed, StringFormat='{0:F1} m/s'}"
-                               FontSize="20"
-                               HorizontalOptions="Center"/>
+                        <!-- Feels Like -->
+                        <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                            <Label Text="Feels Like"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="{Binding WeatherData.FeelsLike, StringFormat='{0:F1}°C'}"
+                                   FontSize="20"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+
+                        <!-- Humidity -->
+                        <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                            <Label Text="Humidity"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="{Binding WeatherData.Humidity, StringFormat='{0}%'}"
+                                   FontSize="20"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+
+                        <!-- Wind Speed -->
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                            <Label Text="Wind Speed"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="{Binding WeatherData.WindSpeed, StringFormat='{0:F1} m/s'}"
+                                   FontSize="20"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Location -->
+                    <VerticalStackLayout Grid.Row="3" 
+                                       Spacing="5"
+                                       HorizontalOptions="Center">
+                        <Label Text="{Binding WeatherData.Latitude, StringFormat='Lat: {0:F4}'}"
+                               FontSize="14"
+                               TextColor="White"/>
+                        <Label Text="{Binding WeatherData.Longitude, StringFormat='Lon: {0:F4}'}"
+                               FontSize="14"
+                               TextColor="White"/>
                     </VerticalStackLayout>
                 </Grid>
-
-                <!-- Location -->
-                <VerticalStackLayout Grid.Row="3" 
-                                   Spacing="5"
-                                   HorizontalOptions="Center">
-                    <Label Text="{Binding WeatherData.Latitude, StringFormat='Lat: {0:F4}'}"
-                           FontSize="14"/>
-                    <Label Text="{Binding WeatherData.Longitude, StringFormat='Lon: {0:F4}'}"
-                           FontSize="14"/>
-                </VerticalStackLayout>
-
-            </Grid>
-        </ScrollView>
-    </RefreshView>
+            </ScrollView>
+        </RefreshView>
+    </Grid>
 </ContentPage>
