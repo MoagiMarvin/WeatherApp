@@ -46,6 +46,7 @@ namespace WeatherApp.Services
                     Latitude = weatherResponse.Coord?.Lat ?? 0,
                     Longitude = weatherResponse.Coord?.Lon ?? 0
                 };
+                
             }
             catch (Exception ex)
             {
@@ -87,6 +88,7 @@ namespace WeatherApp.Services
                     Humidity = weatherResponse.Main?.Humidity ?? 0,
                     Description = weatherResponse.Weather?.FirstOrDefault()?.Description ?? "No description available",
                     Icon = weatherResponse.Weather?.FirstOrDefault()?.Icon ?? "",
+                    IconUrl = weatherResponse.IconUrl,
                     CityName = weatherResponse.Name ?? "Unknown Location",
                     WindSpeed = weatherResponse.Wind?.Speed ?? 0,
                     Latitude = location.Latitude,
